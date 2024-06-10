@@ -1,0 +1,14 @@
+from lib.matching import b_after_a
+from lib.matching import percentage
+
+"aabb" |> b_after_a |> print
+"abab" |> b_after_a |> print
+"aaa" |> b_after_a |> print
+"bbb" |> b_after_a |> print
+
+"perl" |> percentage$("e") |> print
+"java" |> percentage$("a") |> print
+"python" |> percentage$("m") |> print
+"ada" |> percentage$("a") |> print
+"ballerina" |> percentage$("l") |> print
+"analitik" |> percentage$("k") |> print

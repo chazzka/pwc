@@ -1,0 +1,22 @@
+import unittest
+from lib.matching import b_after_a
+from lib.matching import percentage
+
+class TestStringMethods(unittest.TestCase):
+    def test_task1(self):
+        "perl" |> percentage$("e") |> self.assertEqual$(25)
+        "java" |> percentage$("a") |> self.assertEqual$(50)
+        "python" |> percentage$("m") |> self.assertEqual$(0)
+        "ada" |> percentage$("a") |> self.assertEqual$(67)
+        "ballerina" |> percentage$("l") |> self.assertEqual$(22)
+        "analitik" |> percentage$("k") |> self.assertEqual$(13)
+
+    def test_task2(self):
+        "aabb" |> b_after_a |> self.assertTrue
+        "abab" |> b_after_a |> self.assertFalse
+        "aaa" |> b_after_a |> self.assertFalse
+        "bbb" |> b_after_a |> self.assertTrue
+
+
+if __name__ == '__main__':
+    unittest.main()

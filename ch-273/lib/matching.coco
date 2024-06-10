@@ -1,0 +1,34 @@
+def only_b(str):
+    case str:
+        match ['b']+tail:
+            return only_b(tail)
+        match ['a']+tail:
+            return False
+    return True
+        
+
+def b_after_a(str):
+    case str:
+        match ['b']+tail:
+            return only_b(tail)
+        match [_]+tail:
+            return b_after_a(tail)
+    return False
+
+def hrp(value):
+    return int(value + 0.5)
+
+def percentage(char, str, count = 0, length=0):
+    case str:
+        match [f"{char}"]+tail:
+            return percentage(char, tail, count + 1, length + 1)
+        match [_]+tail:
+            return percentage(char, tail, count, length + 1)
+        
+    return (count*100)/length |> hrp
+
+
+
+        
+        
+    
