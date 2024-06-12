@@ -3,16 +3,16 @@ case def only_b:
     case(['a']+tail) = False
     case(_) = True
 
-def b_after_a(s):
-    case s:
-        match ['b']+tail:
-            return only_b(tail)
-        match [_]+tail:
-            return b_after_a(tail)
-    return False
+
+case def b_after_a:
+    case(['b'] + tail) = only_b(tail)
+    case([_] + tail) = b_after_a(tail)
+    case(_) = False
+
 
 def hrp(value):
     return int(value + 0.5)
+
 
 def percentage(char, s, count = 0, length=0):
     case s:
