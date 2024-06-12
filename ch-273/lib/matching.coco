@@ -1,11 +1,7 @@
-def only_b(s):
-    case s:
-        match ['b']+tail:
-            return only_b(tail)
-        match ['a']+tail:
-            return False
-    return True
-        
+case def only_b:
+    case(['b']+tail) = only_b(tail)
+    case(['a']+tail) = False
+    case(_) = True
 
 def b_after_a(s):
     case s:
