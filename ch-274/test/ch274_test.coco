@@ -1,0 +1,26 @@
+import unittest
+from lib.ch274 import pig, append_a, indexate, goat
+
+class TestStringMethods(unittest.TestCase):
+    def test_task1(self):
+        "ahoj" |> pig |> self.assertEqual$("ahojma")
+        "bahoj" |> pig |> self.assertEqual$("ahojbma")
+
+        ("ahoj", 3) |*> append_a |> self.assertEqual$("ahojaaa")
+
+        [10,20,30] |> indexate |> self.assertEqual$(([10,20,30],range(1,4)))
+
+        "I love Perl" |> goat |> self.assertEqual$("Imaa ovelmaaa erlPmaaaa")
+        "Perl and Raku are friends" |> goat |> self.assertEqual$("erlPmaa andmaaa akuRmaaaa aremaaaaa riendsfmaaaaaa")
+        "The Weekly Challenge" |> goat |> self.assertEqual$("heTmaa eeklyWmaaa hallengeCmaaaa")
+
+    # def test_task2(self):
+        # "aabb" |> b_after_a |> self.assertTrue
+        # "abab" |> b_after_a |> self.assertFalse
+        # "aaa" |> b_after_a |> self.assertFalse
+        # "bbb" |> b_after_a |> self.assertTrue
+
+
+if __name__ == '__main__':
+    unittest.main()
+
