@@ -1,4 +1,5 @@
-from lib.ch274 import goat, append_a, indexate
+from lib.ch274_1 import goat, append_a, indexate
+from lib.ch274_2 import depardie, sooner, letgos, preproces_hours
 
 "ahoj" |> goat |> print
 "bhoj" |> goat |> print
@@ -12,63 +13,9 @@ from lib.ch274 import goat, append_a, indexate
 [0,1,2] |> indexate |>list |> print
 
 
+concat = depardie(12,3,41) + depardie(15,9,35) + depardie(30,5,25) |> sorted$(key = x => x[0]) 
 
-def depardie(inter, start, takes) = range(start,60,inter) |> map$(x => (x, x+takes)) |> list
-
-
-#concat = depardie(12,11,41) + depardie(15,5,35) |> sorted$(key = x => x[0]) |> list
-concat = depardie(12,3,41) + depardie(15,9,35) + depardie(30,5,25) |> sorted$(key = x => x[0]) |> list
-
-# TODO: DEPARDIE(30,5,25) NEJAK ZAPOMINA NA ODJEZDY DO CELE
-
-print("debug")
-depardie(30,5,25) |> print 
-concat |> print
-# [(5, 40), (11, 52), (20, 55), (23, 64), (35, 76), (35, 70), (47, 88), (50, 85), (59, 100)]
-
-
-def sooner(da, best):
-    match da:
-        case [tup] + tail if (tup[1] < best[1]) and (tup[0] != best[0]):
-            return sooner(tail, tup)
-        case [_] + tail:
-            return sooner(tail, best)
-    return best
-
-# example: sooner found
-#sooner([(35, 70), (47, 88), (50, 85), (59, 100)], (35, 76)) |> print # (35,70)
-#sooner([(47, 88), (50, 85), (59, 75)], (35, 76)) |> print # (59,75)
-
-# example: sooner not found
-# sooner([(11, 52), (20, 55), (23, 64), (35, 76), (35, 70), (47, 88), (50, 85), (59, 100)], (5, 40)) |> print  # (5,40)
-
-
-
-
-# napis funkci ktera bude prochazet jednotlive itemy a pro kazdy se pokusi najit sooner v tailu (sooner(tail, tup))
-# pokud funkce sooner tup stejny jako vysledek tak se sooner nepovedlo najit a my se posuneme dal, nema cenu poustet bus
-# pokud funkce sooner da jiny vysledek jako aktualni tup, nasel jsi drivejsi bus, tzn od tup se vyplati cekat az do startu toho co jsi nasel
-# aktualni tup pak bude ten co jsi nasel (ostatni muzes preskocit - nechat ujet)
-# odecet minuleho minus aktualniho ti da range co muzes cekat
-# a od noveho co jsi nenechal ujet pokracujes dal, aby jsi vedel jestli tam takto nečihaji dalsi casy kdy by to šlo
-
-
-def depar(da, best, previous = (0,0)):
-    match da:
-        case [tup] + tail:
-            soon = sooner(tail, tup)
-            if soon == tup:
-                #print("neni zadny lepsi")
-                pass
-            else:
-                print(f"mel bych nechat ujet {previous} - {tup}")
-            depar(tail, best, tup)
-
-    return best
-
-# sooner(concat, (5, 40)) |> print
-
-depar(concat, (0,0)) |> print 
+letgos(concat) |> list |> print 
 
 
 
