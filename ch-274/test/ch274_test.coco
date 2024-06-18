@@ -32,11 +32,11 @@ class TestStringMethods(unittest.TestCase):
     def test_task2(self):
         # Example 1
         ex1 = depardie(12,11,41) + depardie(15,5,35) |> sorted$(key = x => x[0])
-        letgos(ex1) |> map$(preproces_hours) |> map$(list) |> flatten |> list |> self.assertEqual$([36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47])
+        letgos(ex1) |> fmap$(preproces_hours) |> fmap$(list) |> flatten |> list |> self.assertEqual$([36, 37, 38, 39, 40, 41, 42, 43, 44, 45, 46, 47])
 
         # Example 2
         ex2 = depardie(12,3,41) + depardie(15,9,35) + depardie(30,5,25) |> sorted$(key = x => x[0]) 
-        letgos(ex2) |> map$(preproces_hours) |> map$(list) |> flatten |> list |> self.assertEqual$([0, 1, 2, 3, 25, 26, 27, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 55, 56, 57, 58, 59])
+        letgos(ex2) |> fmap$(preproces_hours) |> fmap$(list) |> flatten |> list |> self.assertEqual$([0, 1, 2, 3, 25, 26, 27, 40, 41, 42, 43, 44, 45, 46, 47, 48, 49, 50, 51, 55, 56, 57, 58, 59])
         
 
 

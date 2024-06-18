@@ -2,7 +2,7 @@
 creates list of tuples [(leaves,arrives), (leaves, arrives)...]
 # 60 + takes is somewhat magic, we just need some overlap to adress buses thata the cross whole hour
 """
-def depardie(inter, start, takes) = range(start,60+takes,inter) |> map$(x => (x, x+takes)) |> list
+def depardie(inter, start, takes) = range(start,60+takes,inter) |> fmap$(x => (x, x+takes)) |> list
 
 
 """
