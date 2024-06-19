@@ -2,7 +2,7 @@
 creates list of tuples [(leaves,arrives), (leaves, arrives)...]
 # 60 + takes is somewhat magic, we just need some overlap to adress buses thata the cross whole hour
 """
-def depardie(inter, start, takes) = range(start,60+takes,inter) |> fmap$(x => (x, x+takes)) |> list
+def depardie(inter, start, takes) = range(start,60+takes,inter) |> map$(x => (x, x+takes)) |> list
 
 
 """
@@ -13,13 +13,10 @@ example: sooner found
 # example: sooner not found
 # sooner([(11, 52), (20, 55), (23, 64), (35, 76), (35, 70), (47, 88), (50, 85), (59, 100)], (5, 40)) |> print  # (5,40)
 """
-def sooner(da, needle):
-    match da:
-        case [tup] + tail if (tup[1] < needle[1]) and (tup[0] != needle[0]):
-            return sooner(tail, tup)
-        case [_] + tail:
-            return sooner(tail, needle)
-    return needle
+case def sooner:
+    case([(a,b)] + tail, (na, nb) if (a != na) and (b < nb)) = sooner(tail, (a,b))
+    case([_] + tail, needle) = sooner(tail, needle)
+    case(_,needle) = needle
 
 
 """
@@ -28,19 +25,13 @@ example: I should let go from 0:00 to 0:03 -> (0,3),
 WATCH OUT
 from 00:54 to 01:03 -> (54,3) --- see preproces_hours
 """
-def letgos(da, previous = (0,0), letgo = []):
-    match da:
-        case [tup] + tail:
-            soon = sooner(tail, tup)
-            if soon == tup:
-                # there is no sooner, you should hop on now
-                return letgos(tail, tup, letgo)
-            else:
-                # I should let this one go!
-                tup = (tup[0] % 60, tup[1])
-                return letgos(tail, tup, letgo + [(previous[0], tup[0])])
+case def letgos:
+    case(arr) = letgos(arr, (0,0), [])
+    case([tup] + tail, _, letgo if sooner(tail, tup) == tup) = letgos(tail, tup, letgo)
+    case([(a,b)]+ tail, (pa,pb), letgo) = letgos(tail, (a % 60, b), letgo + [(pa, a % 60)])
+    case(_,_,letgo) = letgo
 
-    return letgo
+
 
 
 """
@@ -48,12 +39,8 @@ converts tups to ranges
 preprocess so that ranges are inclusive not exclusive 
 deals with overlaps (54,3) -> (54,60) (hopefuly its enough)
 """
-def preproces_hours(tup):
-    match tup:
-        case (a,b) if a > b:
-            return range(tup[0]+1,60)
-        case (a,b) if a == 0:
-            return range(tup[0],tup[1]+1)
-        case _:
-            return range(tup[0]+1, tup[1] +1)
+case def preproces_hours:
+    case((a,b) if a > b) = range(a+1,60)
+    case((a,b) if a == 0) = range(a,b+1)
+    case((a,b)) = range(a+1, b+1)
 
