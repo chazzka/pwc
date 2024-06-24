@@ -1,0 +1,23 @@
+import unittest
+from lib.ch275_1 import has_key, fully_typed
+
+
+class TestStringMethods(unittest.TestCase):
+    def test_task1(self):
+        has_key(['a','b'], "hjo") |> self.assertEqual$(False)
+        has_key(['a','b'], "hjob") |> self.assertEqual$(True)
+
+        "Perl Weekly Challenge" |> fully_typed$(?,['l', 'a']) |> self.assertEqual$(0)
+        "Perl and Raku" |> fully_typed$(?, ['a']) |> self.assertEqual$(1)
+        "Well done Team PWC" |>  fully_typed$(?, ['l', 'o']) |> self.assertEqual$(2)
+        "The joys of polyglottism" |>  fully_typed$(?, ['T']) |> self.assertEqual$(2)
+
+
+    def test_task2(self):
+        pass
+    
+        
+
+if __name__ == '__main__':
+    unittest.main()
+

@@ -1,0 +1,14 @@
+case def has_key:
+    case([key]+ tail, word if key.casefold() in word.casefold()) = True
+    case([key]+ tail, _) = has_key(tail, word)
+    case(_,_) = False
+
+
+case def count_keys:
+    case([word] + tail as whole, keys) = count_keys(whole, keys, 0)
+    case([word] + tail, keys, count if has_key(keys,word)) = count_keys(tail, keys, count)
+    case([word] + tail, keys, count) = count_keys(tail, keys, count + 1)
+    case(_, _, count) = count
+
+
+def fully_typed(string, keys) = string |> .split(' ') |> count_keys$(?, keys)

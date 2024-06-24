@@ -1,0 +1,6 @@
+from lib.ch275_1 import fully_typed
+
+
+"The joyce of polyglottism" |>  fully_typed$(?, ['T']) |> print
+
+
