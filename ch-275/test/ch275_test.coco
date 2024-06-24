@@ -1,5 +1,6 @@
 import unittest
 from lib.ch275_1 import has_key, fully_typed
+from lib.ch275_2 import shift, shifter
 
 
 class TestStringMethods(unittest.TestCase):
@@ -14,7 +15,11 @@ class TestStringMethods(unittest.TestCase):
 
 
     def test_task2(self):
-        pass
+        "a" |> shift$(?, 2) |> self.assertEqual$('c')
+        "a1c1e1" |> shifter |> ''.join |> self.assertEqual$('abcdef')
+        "a1b2c3d4" |> shifter |> ''.join |> self.assertEqual$('abbdcfdh')
+        "b2b" |> shifter |> ''.join |> self.assertEqual$('bdb')
+        "a16z" |> shifter |> ''.join |> self.assertEqual$('abgz')
     
         
 

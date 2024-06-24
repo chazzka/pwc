@@ -1,0 +1,7 @@
+def shift(char, times) = chr(ord(char) + times)
+
+case def shifter:
+    case([f] + tail as whole) = shifter(whole, f, [])
+    case([s] + tail, prev, arr if s.isdigit()) = shifter(tail, prev, arr + [shift(prev, int(s))])
+    case([s] + tail, f, arr) = shifter(tail, s, arr + [s])
+    case(_,_, arr) = arr
