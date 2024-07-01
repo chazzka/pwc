@@ -1,0 +1,13 @@
+anyio==4.4.0
+async-generator==1.10
+coconut==3.1.1
+cPyparsing==2.4.7.2.4.0
+idna==3.7
+prompt_toolkit==3.0.47
+psutil==6.0.0
+Pygments==2.18.0
+setuptools==70.1.1
+sniffio==1.3.1
+toolz==0.12.1
+typing_extensions==4.12.2
+wcwidth==0.2.13

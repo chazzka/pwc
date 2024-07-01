@@ -1,0 +1,7 @@
+from itertools import combinations
+
+case def full_hourse:
+    case(arr) = full_hourse(arr |> combinations$(?,2) , [])
+    case([(a,b)] :: rest, ok_pairs if (a+b) % 24 == 0) = full_hourse(rest |> reiterable, [(a,b)] + ok_pairs)
+    case([_] :: rest, ok_pairs) = full_hourse(rest |> reiterable, ok_pairs)
+    case(_, ok_pairs) = ok_pairs |> reversed |> list

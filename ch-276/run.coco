@@ -1,0 +1,8 @@
+from lib.ch276_1 import full_hourse
+from lib.ch276_2 import highest_freq
+
+(12, 12, 30, 24, 24) |> full_hourse |> print
+(72, 48, 24, 5) |> full_hourse |> print
+(12, 18, 24)|> full_hourse |> print
+
+(1, 2, 2, 4, 1, 5) |> highest_freq |> print
