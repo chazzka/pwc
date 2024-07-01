@@ -6,9 +6,9 @@ from lib.ch276_2 import highest_freq
 
 class TestStringMethods(unittest.TestCase):
     def test_task1(self):
-        (12, 12, 30, 24, 24) |> full_hourse |> self.assertEqual$([(12, 12), (24, 24)])
-        (72, 48, 24, 5) |> full_hourse |> self.assertEqual$([(72, 48), (72, 24), (48, 24)])
-        (12, 18, 24)|> full_hourse |> self.assertEqual$([])
+        (12, 12, 30, 24, 24) |> full_hourse |> self.assertEqual$(2)
+        (72, 48, 24, 5) |> full_hourse |> self.assertEqual$(3)
+        (12, 18, 24)|> full_hourse |> self.assertEqual$(0)
 
 
     def test_task2(self):
