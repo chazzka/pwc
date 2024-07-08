@@ -10,14 +10,10 @@ defmodule Ch277 do
 
 
   @doc """
-  count search - it returns a map with items that are present "count" times
+  strong pair - it returns boolean whether the supplied array pair is a strong one or not
   """
-  def strong_pair?(p) do
-    case p do
-      [a,b] when 0 < abs(a-b) and abs(a-b) < min(a,b) -> true
-      _ -> false
-    end
-  end
+  def strong_pair?([a,b]) when 0 < abs(a-b) and abs(a-b) < min(a,b), do: true
+  def strong_pair?(_), do: false
 
 
 end

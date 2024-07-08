@@ -49,6 +49,4 @@ defmodule Ch277Test do
     assert [5, 7, 1, 7] |> Combination.combine(2) |> Enum.uniq |> Enum.filter(&(Ch277.strong_pair?(&1))) |> Enum.count == 1
   end
 
-
-
 end
