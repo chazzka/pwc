@@ -24,4 +24,16 @@ defmodule ElixTest do
     assert "champion" |> Task2.preprocess("b") == "champion"
   end
 
+
+  test "task2znovu" do
+    assert "Raku3" |> then(&(Regex.run(~r/(\D+)(\d+)/, &1))) |> Task2Znovu.to_hash == {3, "Raku"}
+    assert "Raku33" |> then(&(Regex.run(~r/(\D+)(\d+)/, &1))) |> Task2Znovu.to_hash == {33, "Raku"}
+    assert "Raku33" |> Task2Znovu.regex_to_hash == {33, "Raku"}
+
+    assert "and2 Raku3 cousins5 Perl1 are4" |> String.split(" ") |> Stream.map(&Task2Znovu.regex_to_hash/1) |> Enum.sort(fn {a, _}, {b, _} -> a <= b end) |> Enum.map(fn {_,b} -> b end) |> Enum.join(" ") == "Perl and Raku are cousins"
+    assert "guest6 Python1 most4 the3 popular5 is2 language7" |> String.split(" ") |> Stream.map(&Task2Znovu.regex_to_hash/1) |> Enum.sort(fn {a, _}, {b, _} -> a <= b end) |> Enum.map(fn {_,b} -> b end) |> Enum.join(" ") == "Python is the most popular guest language"
+    assert "Challenge3 The1 Weekly2" |> String.split(" ") |> Stream.map(&Task2Znovu.regex_to_hash/1) |> Enum.sort(fn {a, _}, {b, _} -> a <= b end) |> Enum.map(fn {_,b} -> b end) |> Enum.join(" ") == "The Weekly Challenge"
+
+  end
+
 end
