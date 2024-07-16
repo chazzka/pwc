@@ -41,6 +41,14 @@ defmodule Task1 do
   end
 end
 
+defmodule Task1Znovu do
+  def to_hash([_, string, number]), do: {String.to_integer(number), string}
+
+  def regex_to_hash(string) do
+    Regex.run(~r/(\D+)(\d+)/, string) |> to_hash
+  end
+end
+
 defmodule Task2 do
   def split_while_inclusive(list, fun) do
     {first_part, rest} = Enum.split_while(list, fun)
@@ -58,13 +66,5 @@ defmodule Task2 do
       [] -> string
       _ -> (f |> Enum.sort() |> Enum.join("")) <> (s |> Enum.join())
     end
-  end
-end
-
-defmodule Task2Znovu do
-  def to_hash([_, string, number]), do: {String.to_integer(number), string}
-
-  def regex_to_hash(string) do
-    Regex.run(~r/(\D+)(\d+)/, string) |> to_hash
   end
 end
