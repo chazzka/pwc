@@ -12,105 +12,96 @@ defmodule ElixTest do
     assert Task1.light?("e6") == true
   end
 
-
-  def numeric_value(coordinates) do
-    [letter, number] = coordinates |> String.graphemes
-    [numeric | _] = letter |> String.to_charlist
-    {numeric, number |> String.to_integer}
-  end
-
-  def string_value(numeric_tuple) do
-    {ascii, number}= numeric_tuple
-    to_string(<<ascii>>) <> to_string(number)
-  end
-
   test "numeric value" do
-    assert "g2" |> numeric_value == {103,2}
-    assert "a8" |> numeric_value == {97,8}
-  end
-
-  @doc"""
-  get score between two coordinates
-  - check x coordinate vs target x
-  - check y coordinate vs target y
-  - overal score is the sum - you have to get closer on both x and y
-  """
-  def score(c_string,target_string) do
-    {c, target} = {c_string |> numeric_value, target_string |> numeric_value}
-    {cx, cy} = c
-    {tx, ty} = target
-    abs(tx-cx) + abs(ty-cy)
-  end
-
-  test "score" do
-    assert ("f4" |> score("a8")) == ("e3" |> score("a8"))
-  end
-
-  @doc"""
-  prints all the jump options from init position
-  """
-  def jump_options(init) do
-    {x,y} = numeric_value(init)
-    res = [{x+2,y+1}, {x+2,y-1},{x+1,y+2},{x+1,y-2},  {x-1,y-2}, {x-2,y-1}, {x-2,y+1}, {x-1,y+2}]
-    res |> Enum.map(&string_value/1)
+    assert "g2" |> Task2.numeric_value == {103, 2}
+    assert "a8" |> Task2.numeric_value == {97, 8}
   end
 
   test "jump_options" do
-    assert "d5" |> jump_options == ["f6", "f4", "e7", "e3", "c3", "b4", "b6", "c7"]
+    assert "d5" |> Task2.jump_options == ["f6", "f4", "e7", "e3", "c3", "b4", "b6", "c7"]
+    assert "h1" |> Task2.jump_options == ["f2", "g3"]
   end
 
-  """
-  if you have higher border score, you are closer to center
-  """
-  def border_score(policko) do
-    {x,y} = policko |> numeric_value
-    x_min = 97
-    x_max = 104
-    y_min = 1
-    y_max = 8
+  test "tree" do
+    root = %Tree{key: "root", value: 0}
+    root2 = Tree.insert_nodes_under(root, "root", ["a1", "b2"])
+    root3 = Tree.insert_nodes_under(root2, "a1", ["c5"])
 
-    distance_to_x_border = min(x - x_min, x_max - x)
-    distance_to_y_border = min(y - y_min, y_max - y)
+    assert root3 == %Tree{
+             key: "root",
+             value: 0,
+             children: %{
+               "a1" => %Tree{
+                 key: "a1",
+                 value: 1,
+                 children: %{"c5" => %Tree{key: "c5", value: 2, children: %{}}}
+               },
+               "b2" => %Tree{key: "b2", value: 1, children: %{}}
+             }
+           }
 
-    distance_to_x_border + distance_to_y_border
+    assert Tree.has_key?(root3, "a1") == true
+    assert Tree.has_key?(root3, "c5") == true
+    assert Tree.get_children_keys(root3, "a1") == ["c5"]
+    assert Tree.get_children_keys(root3, "root") == ["a1", "b2"]
+    assert Tree.get_keys_at_depth(root3, 2) == ["c5"]
+    assert Tree.get_keys_at_depth(root3, 1) == ["b2", "a1"]
   end
 
-  test "border_score" do
-    assert border_score("a1") == border_score("h1")
-    assert border_score("d5") > border_score("b1")
-    # assert border_score("b6") > border_score("a5")
+  test "multi insert" do
+    root = %Tree{key: "g2", value: 0}
+    next = Tree.multi_insert(root, ["g2"], &Task2.jump_options/1)
+    # nejprve insert k jednomu klici v rootu
+    assert next == %Tree{
+             key: "g2",
+             value: 0,
+             children: %{
+               "e1" => %Tree{key: "e1", value: 1, children: %{}},
+               "e3" => %Tree{key: "e3", value: 1, children: %{}},
+               "f4" => %Tree{key: "f4", value: 1, children: %{}},
+               "h4" => %Tree{key: "h4", value: 1, children: %{}}
+             }
+           }
+
+    # ted insert k nejakemu diteti, pod e1 a e3 by mely byt nove options
+    next2 = Tree.multi_insert(next, ["e1", "e3"], &Task2.jump_options/1)
+
+    assert next2 == %Tree{
+             key: "g2",
+             value: 0,
+             children: %{
+               "e1" => %Tree{
+                 key: "e1",
+                 value: 1,
+                 children: %{
+                   "c2" => %Tree{key: "c2", value: 2, children: %{}},
+                   "d3" => %Tree{key: "d3", value: 2, children: %{}},
+                   "f3" => %Tree{key: "f3", value: 2, children: %{}},
+                   "g2" => %Tree{key: "g2", value: 2, children: %{}}
+                 }
+               },
+               "e3" => %Tree{
+                 children: %{
+                   "c2" => %Tree{key: "c2", value: 2, children: %{}},
+                   "c4" => %Tree{key: "c4", value: 2, children: %{}},
+                   "d1" => %Tree{key: "d1", value: 2, children: %{}},
+                   "d5" => %Tree{key: "d5", value: 2, children: %{}},
+                   "f1" => %Tree{key: "f1", value: 2, children: %{}},
+                   "f5" => %Tree{key: "f5", value: 2, children: %{}},
+                   "g2" => %Tree{key: "g2", value: 2, children: %{}},
+                   "g4" => %Tree{key: "g4", value: 2, children: %{}}
+                 },
+                 key: "e3",
+                 value: 1
+               },
+               "f4" => %Tree{key: "f4", value: 1, children: %{}},
+               "h4" => %Tree{key: "h4", value: 1, children: %{}}
+             }
+           }
   end
 
-  def get_best_option(options, goal) do
-    zipped = options |> Enum.map(&score(&1 ,goal)) |> Enum.zip(options)
-    {min_score, _} = zipped |> Enum.min_by(fn {score, _pos} -> score end)
-    filtered = Enum.filter(zipped, fn {score, _pos} -> score == min_score end)
-    # closer_to_center = Enum.min_by(filtered, fn {_, pos} -> border_score(pos) end)
-
+  test "Task 2" do
+    assert Task2.knights_move("g2", "a8") == 4
+    assert Task2.knights_move("g2", "h2") == 3
   end
-
-  test "best options" do
-    # get_best_option(jump_options("g2"), "a8") |> IO.inspect
-    # get_best_option(jump_options("d5"), "a8") |> IO.inspect
-    get_best_option(jump_options("c4"), "a8") |> IO.inspect
-  end
-
-  # def find_goal(initial_position, goal) do
-  #   Stream.iterate(initial_position, fn current_position ->
-  #     options = jump_options(current_position)
-  #     get_best_option(options, goal)
-  #   end)
-  #   |> Enum.take_while(fn position -> Enum.member?(jump_options(position),goal) end)
-  #   # |> Enum.take_while(fn position -> position |> IO.inspect > 5 end)
-  # end
-
-
-  # test "find_goal" do
-  #   # find_goal("g2", "a8") |> IO.inspect
-  #   find_goal("e3", "b6") |> IO.inspect
-  # end
-
-
-
-
 end
