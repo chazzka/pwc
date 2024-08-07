@@ -73,18 +73,7 @@ defmodule Tree do
     end
   end
 
-  def get_children_keys(nil, _key), do: []
-
-  def get_children_keys(%Tree{} = tree, key) do
-    case find_node(tree, key) do
-      nil -> []
-      %Tree{children: children} -> Map.keys(children)
-    end
-  end
-
-  def get_keys_at_depth(tree, depth) do
-    get_keys_at_depth(tree, depth, [])
-  end
+  def get_keys_at_depth(tree, depth), do: get_keys_at_depth(tree, depth, [])
 
   defp get_keys_at_depth(nil, _depth, acc), do: acc
 
@@ -105,17 +94,16 @@ defmodule Tree do
     multi_insert(insert_nodes_under(tree, key, jumps_function.(key)), rest, jumps_function)
   end
 
+
   def insert_recursively(endP, tree, jumps_function, current_level) do
     # nejrpve ziskej vsechny klice na aktualnim levelu
     current_keys = get_keys_at_depth(tree, current_level)
     # insert pro vsecky zvlast:
     new_tree = multi_insert(tree, current_keys, jumps_function)
     # kontrola jestli tam neni nas:
-    if has_key?(new_tree, endP) do
-      # pokud je tak ho vrat
-      find_node(new_tree, endP).value
-    else
-      insert_recursively(endP, new_tree, jumps_function, current_level + 1)
+    case node = find_node(new_tree, endP) do
+      nil -> insert_recursively(endP, new_tree, jumps_function, current_level + 1)
+      _ -> node.value
     end
   end
 end
