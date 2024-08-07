@@ -74,12 +74,10 @@ defmodule Tree do
   end
 
   def get_keys_at_depth(tree, depth), do: get_keys_at_depth(tree, depth, [])
-
   defp get_keys_at_depth(nil, _depth, acc), do: acc
 
   defp get_keys_at_depth(%Tree{key: key, value: value, children: children} = _tree, depth, acc) do
     acc = if value == depth, do: [key | acc], else: acc
-
     children
     |> Map.values()
     |> Enum.reduce(acc, fn child, acc -> get_keys_at_depth(child, depth, acc) end)
@@ -93,7 +91,6 @@ defmodule Tree do
   def multi_insert(tree, [key | rest], jumps_function) do
     multi_insert(insert_nodes_under(tree, key, jumps_function.(key)), rest, jumps_function)
   end
-
 
   def insert_recursively(endP, tree, jumps_function, current_level) do
     # nejrpve ziskej vsechny klice na aktualnim levelu
@@ -109,7 +106,6 @@ defmodule Tree do
 end
 
 defmodule Task2 do
-
   def numeric_value(coordinates) do
     [letter, number] = coordinates |> String.graphemes()
     [numeric | _] = letter |> String.to_charlist()
